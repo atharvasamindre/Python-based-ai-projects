@@ -1,2 +1,2 @@
 # Python-based-ai-projects
-This is our First git repository
+This is my First git repository
