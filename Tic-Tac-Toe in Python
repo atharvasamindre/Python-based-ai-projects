@@ -1,76 +1,56 @@
-# Create board
-board = [" " for i in range(9)]
+import random
 
-# Print the board
-def print_board():
-    row1 = f" {board[0]} | {board[1]} | {board[2]} "
-    row2 = f" {board[3]} | {board[4]} | {board[5]} "
-    row3 = f" {board[6]} | {board[7]} | {board[8]} "
-
-    print(row1)
-    print("-" * len(row1))
-    print(row2)
-    print("-" * len(row1))
-    print(row3)
-
-# Check if the game is over
-def is_game_over():
-    if check_win() or check_draw():
-        return True
-    return False
-
-# Check if there is a win
-def check_win():
-    # Rows
-    for i in range(0, 9, 3):
-        if board[i] == board[i + 1] == board[i + 2] != " ":
-            return True
-    # Columns
-    for i in range(3):
-        if board[i] == board[i + 3] == board[i + 6] != " ":
-            return True
-    # Diagonals
-    if board[0] == board[4] == board[8] != " " or board[2] == board[4] == board[6] != " ":
-        return True
-    return False
-
-# Check if there is a draw
-def check_draw():
-    return " " not in board
-
-# Player move
-def player_move(player):
+def get_user_choice():
     while True:
-        try:
-            position = int(input(f"Player {player}'s turn (1-9): ")) - 1
-            if board[position] == " ":
-                board[position] = player
-                break
-            else:
-                print("This position is already taken!")
-        except ValueError:
-            print("Please enter a valid number between 1 and 9!")
-
-# Start the game
-def start_game():
-    print("Welcome to Tic-Tac-Toe!")
-    print_board()
-
-    players = ["X", "O"]
-    current_player = players[0]
-    while not is_game_over():
-        player_move(current_player)
-        print_board()
-        if current_player == "X":
-            current_player = "O"
+        user_choice = input("Choose rock, paper, or scissors: ").lower()
+        if user_choice in ['rock', 'paper', 'scissors']:
+            return user_choice
         else:
-            current_player = "X"
+            print("Invalid choice. Please choose rock, paper, or scissors.")
 
-    if check_win():
-        print(f"Player {current_player} wins!")
+def get_computer_choice():
+    return random.choice(['rock', 'paper', 'scissors'])
+
+def determine_winner(user_choice, computer_choice):
+    if user_choice == computer_choice:
+        return "It's a tie!"
+    elif (
+        (user_choice == 'rock' and computer_choice == 'scissors') or
+        (user_choice == 'paper' and computer_choice == 'rock') or
+        (user_choice == 'scissors' and computer_choice == 'paper')
+    ):
+        return "You win!"
     else:
-        print("It's a draw!")
+        return "You lose!"
 
-# Run the game
+def rock_paper_scissors_game():
+    user_score = 0
+    computer_score = 0
+
+    while True:
+        print("\nRock-Paper-Scissors Game")
+        user_choice = get_user_choice()
+        computer_choice = get_computer_choice()
+
+        print(f"\nYour choice: {user_choice}")
+        print(f"Computer's choice: {computer_choice}")
+
+        result = determine_winner(user_choice, computer_choice)
+        print(result)
+
+        if 'win' in result:
+            user_score += 1
+        elif 'lose' in result:
+            computer_score += 1
+
+        print(f"\nScore - You: {user_score} | Computer: {computer_score}")
+
+        play_again = input("Do you want to play again? (yes/no): ").lower()
+        if play_again != 'yes':
+            print("Thanks for playing! Goodbye!")
+            break
+
 if __name__ == "__main__":
-    start_game()
+    rock_paper_scissors_game()
+# end of file
+    
